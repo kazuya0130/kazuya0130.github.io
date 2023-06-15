@@ -2,7 +2,6 @@
 <html>
 <head>
   <title>Chat API Test</title>
-  <script src="https://jiibmxjbeihitzbctgxo.supabase.co"></script>
   <style>
     #chat-container {
       max-height: 70vh;
@@ -52,7 +51,7 @@
       messageElement.innerText = `${role}: ${content}`;
       messageElement.classList.add(`${role.toLowerCase()}-message`);
       chatContainer.appendChild(messageElement);
-      chatContainer.scrollTop = chatContainer.scrollHeight; // ƒXƒNƒ[ƒ‹‚ğÅ‰º•”‚ÉˆÚ“®
+      chatContainer.scrollTop = chatContainer.scrollHeight; // ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã‚’æœ€ä¸‹éƒ¨ã«ç§»å‹•
     }
 
     function sendQuestion() {
@@ -60,7 +59,7 @@
       if (message !== '') {
         const data = {
           message: message,
-          user_id: 'user1' // ƒ†[ƒUID‚ğ“K‹Xİ’è‚µ‚Ä‚­‚¾‚³‚¢
+          user_id: 'user1' // ãƒ¦ãƒ¼ã‚¶IDã‚’é©å®œè¨­å®šã—ã¦ãã ã•ã„
         };
 
         fetch(endpoint, {
