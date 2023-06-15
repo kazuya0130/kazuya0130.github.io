@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat API Test</title>
+  <script src="https://jiibmxjbeihitzbctgxo.supabase.co"></script>
+  <style>
+    #chat-container {
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    #input-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 10px;
+      background-color: #f2f2f2;
+      box-sizing: border-box;
+    }
+    #message-input {
+      width: calc(100% - 100px);
+      margin-right: 10px;
+    }
+    .user-message {
+      color: blue;
+    }
+    .assistant-message {
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div id="chat-container"></div>
+  <div id="input-container">
+    <textarea id="message-input" placeholder="Enter your question"></textarea>
+    <button id="send-button">Send</button>
+    <button id="clear-button">Clear History</button>
+  </div>
+
+  <script>
+    const chatContainer = document.getElementById('chat-container');
+    const messageInput = document.getElementById('message-input');
+    const sendButton = document.getElementById('send-button');
+    const clearButton = document.getElementById('clear-button');
+
+    const endpoint = 'http://localhost:5000/chat';
+
+    let messageHistory = [];
+
+    function addMessage(role, content) {
+      const messageElement = document.createElement('p');
+      messageElement.innerText = `${role}: ${content}`;
+      messageElement.classList.add(`${role.toLowerCase()}-message`);
+      chatContainer.appendChild(messageElement);
+      chatContainer.scrollTop = chatContainer.scrollHeight; // スクロールを最下部に移動
+    }
+
+    function sendQuestion() {
+      const message = messageInput.value.trim();
+      if (message !== '') {
+        const data = {
+          message: message,
+          user_id: 'user1' // ユーザIDを適宜設定してください
+        };
+
+        fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+          const response = data.response;
+          addMessage('User', message);
+          addMessage('Assistant', response);
+        })
+        .catch(error => console.error(error));
+
+        messageInput.value = '';
+      }
+    }
+
+    function clearHistory() {
+      chatContainer.innerHTML = '';
+      messageHistory = [];
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendQuestion();
+      }
+    }
+
+    sendButton.addEventListener('click', sendQuestion);
+    clearButton.addEventListener('click', clearHistory);
+    messageInput.addEventListener('keydown', handleKeyDown);
+  </script>
+</body>
+</html>
